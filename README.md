@@ -335,3 +335,90 @@ class AddGearActivity : AppCompatActivity() {
 
     </LinearLayout>
 </ScrollView>
+
+
+
+
+
+NEW
+<color name="dark_bg">#0F2027</color><color name="card_bg">#1B262C</color><color name="accent">#FFD700</color>
+
+Activity main<?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:orientation="vertical"    android:padding="20dp"    android:gravity="center">
+    <TextView        android:id="@+id/txtTitle"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:text="Campsite Commander"        android:textSize="28sp"        android:textStyle="bold"/>
+    <EditText        android:id="@+id/edtItem"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:hint="Item Name"/>
+    <EditText        android:id="@+id/edtCategory"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:hint="Category"/>
+    <EditText        android:id="@+id/edtQuantity"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:hint="Quantity"        android:inputType="number"/>
+    <Button        android:id="@+id/btnAdd"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:text="Add Gear"/>
+    <TextView        android:id="@+id/txtTotal"        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:text="Total Items: 0"        android:textSize="20sp"        android:layout_marginTop="20dp"/>
+    <Button        android:id="@+id/btnDetails"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:text="View Details"/>
+</LinearLayout>
+Detail<?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:orientation="vertical"    android:padding="16dp">
+    <TextView        android:id="@+id/txtDetails"        android:layout_width="match_parent"        android:layout_height="0dp"        android:layout_weight="1"        android:textSize="18sp"/>
+    <Button        android:id="@+id/btnBack"        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:text="Back to Base"/>
+</LinearLayout>
+Splash<?xml version="1.0" encoding="utf-8"?><LinearLayout    xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:gravity="center"    android:orientation="vertical">
+    <ImageView        android:layout_width="150dp"        android:layout_height="150dp"        android:src="@mipmap/ic_launcher"/>
+    <TextView        android:layout_width="wrap_content"        android:layout_height="wrap_content"        android:text="Campsite Commander"        android:textSize="28sp"        android:textStyle="bold"/>
+</LinearLayout>
+Splashkt
+package com.example.campsitecommander
+import android.content.Intentimport android.os.Bundleimport android.os.Handlerimport android.os.Looperimport androidx.appcompat.app.AppCompatActivity
+class SplashActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_splash)
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(                Intent(this, MainActivity::class.java)            )
+            finish()
+        }, 3000)    }}
+Mainpackage com.example.campsitecommander
+import android.content.Intentimport android.os.Bundleimport android.widget.*import androidx.appcompat.app.AppCompatActivity
+class MainActivity : AppCompatActivity() {
+    private val itemNames = ArrayList<String>()    private val categories = ArrayList<String>()    private val quantities = ArrayList<Int>()    private val comments = ArrayList<String>()
+    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_main)
+        val edtItem = findViewById<EditText>(R.id.edtItem)        val edtCategory = findViewById<EditText>(R.id.edtCategory)        val edtQuantity = findViewById<EditText>(R.id.edtQuantity)
+        val btnAdd = findViewById<Button>(R.id.btnAdd)        val btnDetails = findViewById<Button>(R.id.btnDetails)        val txtTotal = findViewById<TextView>(R.id.txtTotal)
+        // Sample Data        itemNames.add("Tent")        categories.add("Shelter")        quantities.add(1)        comments.add("4-person waterproof")
+        itemNames.add("Marshmallows")        categories.add("Food")        quantities.add(3)        comments.add("For S'mores")
+        itemNames.add("Flashlight")        categories.add("Safety")        quantities.add(2)        comments.add("Check batteries")
+        updateTotal(txtTotal)
+        btnAdd.setOnClickListener {
+            if (                edtItem.text.isEmpty() ||                edtCategory.text.isEmpty() ||                edtQuantity.text.isEmpty()            ) {
+                Toast.makeText(                    this,                    "Please complete all fields",                    Toast.LENGTH_SHORT                ).show()
+            } else {
+                itemNames.add(edtItem.text.toString())                categories.add(edtCategory.text.toString())                quantities.add(edtQuantity.text.toString().toInt())                comments.add("User Added")
+                updateTotal(txtTotal)
+                Toast.makeText(                    this,                    "Item Added",                    Toast.LENGTH_SHORT                ).show()
+                edtItem.text.clear()                edtCategory.text.clear()                edtQuantity.text.clear()            }        }
+        btnDetails.setOnClickListener {
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putStringArrayListExtra("items", itemNames)            intent.putStringArrayListExtra("categories", categories)            intent.putIntegerArrayListExtra("quantities", quantities)            intent.putStringArrayListExtra("comments", comments)
+            startActivity(intent)        }    }
+    private fun updateTotal(txtTotal: TextView) {
+        var total = 0
+        for (qty in quantities) {            total += qty        }
+        txtTotal.text = "Total Items: $total"    }}
+Detailpackage com.example.campsitecommander
+import android.os.Bundleimport android.widget.Buttonimport android.widget.TextViewimport androidx.appcompat.app.AppCompatActivity
+class DetailActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {        super.onCreate(savedInstanceState)        setContentView(R.layout.activity_details)
+        val txtDetails = findViewById<TextView>(R.id.txtDetails)        val btnBack = findViewById<Button>(R.id.btnBack)
+        val items = intent.getStringArrayListExtra("items")        val categories = intent.getStringArrayListExtra("categories")        val quantities = intent.getIntegerArrayListExtra("quantities")        val comments = intent.getStringArrayListExtra("comments")
+        var displayText = ""
+        if (items != null) {
+            for (i in items.indices) {
+                displayText +=                    "Item: ${items[i]}\n" +                    "Category: ${categories!![i]}\n" +                    "Quantity: ${quantities!![i]}\n" +                    "Comments: ${comments!![i]}\n\n"            }        }
+        txtDetails.text = displayText
+        btnBack.setOnClickListener {            finish()        }    }}
+
+
+
+On Wed, 10 Jun 2026, 13:27 Luyanda Ross, <dj.zeeno.rsa@gmail.com> wrote:
+<?xml version="1.0" encoding="utf-8"?><ScrollView xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"    android:layout_height="match_parent"    android:background="#0F2027">
+    <LinearLayout        android:layout_width="match_parent"        android:layout_height="wrap_content"        android:orientation="vertical"        android:padding="24dp">
+        <TextView            android:layout_width="wrap_content"            android:layout_height="wrap_content"            android:text="Add New Gear"            android:textColor="#FFFFFF"            android:textSize="24sp"            android:textStyle="bold" />
+        <EditText            android:id="@+id/editItemName"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="20dp"            android:hint="Item Name e.g. Tent"            android:textColor="#FFFFFF"            android:textColorHint="#888" />
+        <EditText            android:id="@+id/editCategory"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="12dp"            android:hint="Category e.g. Shelter, Food, Safety"            android:textColor="#FFFFFF"            android:textColorHint="#888" />
+        <EditText            android:id="@+id/editQuantity"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="12dp"            android:hint="Quantity"            android:inputType="number"            android:textColor="#FFFFFF"            android:textColorHint="#888" />
+        <EditText            android:id="@+id/editComments"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="12dp"            android:hint="Comments e.g. 4-person waterproof"            android:textColor="#FFFFFF"            android:textColorHint="#888" />
+        <Button            android:id="@+id/btnSaveGear"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="24dp"            android:backgroundTint="#2C5364"            android:text="Save Gear"            android:textColor="#FFFFFF" />
+        <Button            android:id="@+id/btnBackToMain"            android:layout_width="match_parent"            android:layout_height="wrap_content"            android:layout_marginTop="8dp"            android:backgroundTint="#203A43"            android:text="Back to Base"            android:textColor="#FFFFFF" />
+    </LinearLayout></ScrollView>
