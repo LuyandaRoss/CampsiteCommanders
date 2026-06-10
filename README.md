@@ -257,3 +257,81 @@ class AddGearActivity : AppCompatActivity() {
 <activity android:name=".MainActivity" />
 <activity android:name=".AddGearActivity" />
 <activity android:name=".DetailedViewActivity" />
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F2027">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Gear"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Item Name e.g. Tent"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888" />
+
+        <EditText
+            android:id="@+id/editCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Category e.g. Shelter, Food, Safety"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888" />
+
+        <EditText
+            android:id="@+id/editQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Quantity"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888" />
+
+        <EditText
+            android:id="@+id/editComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Comments e.g. 4-person waterproof"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888" />
+
+        <Button
+            android:id="@+id/btnSaveGear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#2C5364"
+            android:text="Save Gear"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnBackToMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#203A43"
+            android:text="Back to Base"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
